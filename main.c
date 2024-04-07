@@ -7,9 +7,12 @@
 #define NUMWORDS 3
 #define NUMLETTERS 3
 
+//game modes
 #define COMPUTER 1
 #define MULTIPLAYER 2
+#define NONE 3
 
+//game states
 #define START 0
 #define MODESELECT 1
 #define PENDING 2
@@ -38,9 +41,7 @@ void correct();
 void playComputer();
 void playMultiplayer();
 
-void wordCompare(char word[5], int screennumber);
-void assignWord(struct Word wordSelect);
-
+void wordCompare();
 
 int main() {
     game.state = START;
@@ -61,27 +62,10 @@ int main() {
             case CORRECT:
                 correct();
                 break;
+            default:
+                clearscreen();
+                break;
         }
-
-        //start screen
-        drawScreen(1);
-        //press enter to start
-        while (keyboard() != '\n') {}    //error detection
-
-        //choose game style screen
-        drawScreen(2);
-        //press 1 to play against computer, press 2 to play multiplayer
-        int i = 1;
-        char output;
-        while (i == 1) {
-            output = keyboard();
-            if ((output == '1') || (output == '2'))
-                i = 0;
-        }
-        if (output == '1') 
-            playComputer();
-        else 
-            playMultiplayer();
     };
 }
 
@@ -128,13 +112,6 @@ void correct() {
 }
 
 void playComputer() {
-    struct Word {
-        int status;
-        char word[5];
-        int screen;
-    };
-
-    int wordPool[NUMWORDS] = {0, 1, 2};
 
     struct Word cat = {0, "CAT", 30};
     struct Word dog = {1, "DOG", 40};
@@ -145,20 +122,19 @@ void playComputer() {
     int wordselect = 0; //could make random number using rand() % NUMWORDS for more options
     switch (wordselect) {
         case 0:
-            assignWord(cat);
+            game.word = cat;
             break;
         case 1:
-            assignWord(dog);
+            game.word = dog;
             break;
         case 2:
-            assignWord(car);
+            game.word = car;
             break;
     }
 
-    wordCompare (game.word.word, game.word.screen);
+    wordCompare ();
 
     //structured so more words can be added easily
-
     return;
 }
 
@@ -166,7 +142,7 @@ void playMultiplayer() {
 
 }
 
-void wordCompare(char word[5], int screennumber) {
+void wordCompare() {
     int i = 0;
     drawScreen(game.word.screen);
     while (i != NUMLETTERS) {
@@ -180,14 +156,5 @@ void wordCompare(char word[5], int screennumber) {
 
     }
     game.state = CORRECT;
-    return;
-}
-
-void assignWord(struct Word wordSelect) {
-    game.word.status = wordSelect.status;
-    game.word.screen = wordSelect.screen;
-    for (int i = 0; i < NUMLETTERS; i++) {
-        game.word.word[i] = wordSelect.word[i];
-    }
     return;
 }
