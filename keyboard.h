@@ -6,6 +6,5 @@
 
 // Function prototypes
 char keyboard();
-void clear_screen()
 
 #endif

@@ -10,7 +10,7 @@
 
 // Function prototypes
 void drawScreen(int screen);
-void plot_pixel(int x, int y, short int line_color);
-void clear_screen();
+void plotPixel(int x, int y, short int line_color);
+void clearScreen();
 
 #endif // VGA_H

@@ -132,16 +132,3 @@ char keyboard() {
     }
 return 0;
 }
-
-void clear_screen(){
-    //initialize variables to iterate through the pixels
-    int x;
-	int y;
-	
-    //go over each pixel in the vga display and set the colour of the pixel to black
-    for (x = 0; x < 320; x++) {
-		for (y = 0; y < 240; y++) {
-			plot_pixel(x, y, 0x0000);	
-		}
-	}
-}
