@@ -25,6 +25,7 @@ void wordCompare();
 
 int main() {
     game.state = START;
+    NIOS2_WRITE_IENABLE( 0x81 );    // set interrupt mask bits for levels 0 and 7
     while (1) { //infinite loop
         switch (game.state) {
             case START:
@@ -33,6 +34,14 @@ int main() {
             case MODESELECT:
                 modeSelect();
                 break;
+            case COMPUTER:
+                playComputer();
+                break;
+            case MULTIPLAYER:
+                playMultiplayer();
+                break;
+
+                //
             case PENDING:
                 wordCompare(game.word.word, game.word.screen);
                 break;
@@ -54,53 +63,23 @@ int main() {
 
 void start() {
     background(START, 0);
-    while (keyboard() != 0x5A) {}    //waiting for user input "enter"
-    game.state = MODESELECT;
+    keyboardsetup();
+    while (1) {}
     return;
 }
 
 void modeSelect() {
     background(MODESELECT, 0);
-    int i = 1;
-    int output;
-    while (i == 1) {    //wait for user to select mode
-        output = keyboard();
-        if ((output == 0x1E) || (output == 0x16))
-            i = 0;
-    }
-
-    if (output == 0x16) {
-        game.mode = COMPUTER;
-        playComputer();
-    } else {
-        game.mode = MULTIPLAYER;
-        //playMultiplayer();
-    }
-
-    return;
-}
-
-void incorrect() {
-    background(10, 0);
-    //timer(1000000000) //2 seconds
-    game.state = PENDING;
-    background(game.word.screen, 0);
-    return;
-}
-
-void correct() {
-    background(11, 0);
-    //timer(1000000000) //2 seconds
-    game.state = START;
+    while (1) {}
     return;
 }
 
 void playComputer() {
     background(PENDING, 0);
 
-    struct Word cat = {0, "CAT", 30};
-    struct Word dog = {1, "DOG", 40};
-    struct Word car = {2, "CAR", 50};
+    struct Word cat = {0, "CAT", 30, 0};
+    struct Word dog = {1, "DOG", 40, 0};
+    struct Word car = {2, "CAR", 50, 0};
 
     /*  OTHER POTENTIAL WORDS: Bat, Ant, Bow, Bed, Car */
  
@@ -116,138 +95,36 @@ void playComputer() {
             game.word = car;
             break;
     }
-
-    wordCompare ();
-
+    game.state = PENDING;
+    NIOS2_WRITE_STATUS(1);
+    timer();
+    while (1) {}
     //structured so more words can be added easily
     return;
 }
 
-void wordCompare() {
-    int i = 0;
-    int keyboardOutput;
-    char output;
-
-    background(game.word.screen, 0);
-    //call timer
-    timer();
-    if (game.mode == TIMEOUT) return;
-    while (i != NUMLETTERS) {
-        keyboardOutput = keyboard();
-        switch (keyboardOutput) {    //letter mapping
-                //LETTERS
-                case 0x1C:
-                    output = 'A';
-                    break;
-                case 0x32:
-                    output = 'B';
-                    break;
-                case 0x21:
-                    output = 'C';
-                    break;
-                case 0x23:
-                    output = 'D';
-                    break;
-                case 0x24:
-                    output = 'E';
-                    break;
-                case 0x2B:
-                    output = 'F';
-                    break;
-                case 0x34:
-                    output = 'G';
-                    break;
-                case 0x33:
-                    output = 'H';
-                    break;
-                case 0x43:
-                    output = 'I';
-                    break;
-                case 0x3B:
-                    output = 'J';
-                    break;
-                case 0x42:
-                    output = 'K';
-                    break;
-                case 0x4B:
-                    output = 'L';
-                    break;
-                case 0x3A:
-                    output = 'M';
-                    break;
-                case 0x31:
-                    output = 'N';
-                    break;
-                case 0x44:
-                    output = 'O';
-                    break;
-                case 0x4D:
-                    output = 'P';
-                    break;
-                case 0x15:
-                    output = 'Q';
-                    break;
-                case 0x2D:
-                    output = 'R';
-                    break;
-                case 0x1B:
-                    output = 'S';
-                    break;
-                case 0x2C:
-                    output = 'T';
-                    break;
-                case 0x3C:
-                    output = 'U';
-                    break;
-                case 0x2A:
-                    output = 'V';
-                    break;
-                case 0x1D:
-                    output = 'W';
-                    break;
-                case 0x22:
-                    output = 'X';
-                    break;
-                case 0x35:
-                    output = 'Y';
-                    break;
-                case 0x1A:
-                    output = 'Z';
-                    break;
-
-                //NUMBERS
-                case 0x45:
-                    output = '0';
-                    break;
-                case 0x16:
-                    output = '1';
-                    break;
-                case 0x1E:
-                    output = '2';
-                    break;
-
-                //ALTERNATIVE CHARACTERS
-                case 0x29:
-                    output = ' ';
-                    break;
-                case 0x5A:
-                    output = '\n';
-                    break;
-                case 0x66:
-                    output = '\b';
-                    break;
-
-                default:
-                    output = '0'; // default case if no match found
-            }       
-
-        if (output != game.word.word[i])
-            background(10, 0);
-        else {
-            background(i, keyboardOutput);
-            i++;
-        }
+int wordCompare(char output) {
+    if (output == game.word.word[game.word.i]) {
+        game.word.i++;
+        return 1;
+    } else {
+        game.state = INCORRECT;
+        return 0;
     }
-    game.state = CORRECT;
+    return;
+}
+
+void incorrect() {
+    background(10, 0);
+    //timer(1000000000) //2 seconds
+    game.state = PENDING;
+    background(game.word.screen, 0);
+    return;
+}
+
+void correct() {
+    background(11, 0);
+    //timer(1000000000) //2 seconds
+    game.state = START;
     return;
 }

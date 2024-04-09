@@ -3,7 +3,7 @@
 
 #include "address_map_nios2.h"
 
-volatile int count;
+
 
 
 #ifndef __NIOS2_CTRL_REG_MACROS__
@@ -32,7 +32,7 @@ do { dest = __builtin_rdctl(5); } while (0)
 /* function prototypes */
 void interrupt_handler(void);
 void interval_timer_isr(void);
-void pushbutton_ISR(void);
+void keyboard_isr();
 /* The assembly language code below handles Nios II reset processing */
 void the_reset (void) __attribute__ ((section (".reset")));
 /* The assembly language code below handles Nios II exception processing. This code should not be

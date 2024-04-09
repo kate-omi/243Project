@@ -1802,83 +1802,87 @@ const int player2guessscreen[] = {
         printLetter.y[0] = 192;
         printLetter.y[1] = 227;
 
-        if (letters == 0x1c) {
+        switch (letters) {
+          case 0x1C:
             printLetter.array = a;
-        } 
-        else if (letters == 0x32) {
-printLetter.array = b;
-}
-else if (letters == 0x21) {
-printLetter.array = c;
-}
-else if (letters == 0x23) {
-printLetter.array = d;
-}
-else if (letters == 0x24) {
-printLetter.array = e;
-}
-else if (letters == 0x2B) {
- printLetter.array = f;
-}
-else if (letters == 0x34) {
-printLetter.array = g;
-}
-else if (letters == 0x33) {
-printLetter.array = h;
-}
-else if (letters == 0x43) {
-printLetter.array = i;
-}
-else if (letters == 0x3B) {
-printLetter.array = j;
-}
-else if (letters == 0x42) {
-printLetter.array = k;
-}
-else if (letters == 0x4B) {
- printLetter.array = l;
-                    }
-else if (letters == 0x3A) {
-printLetter.array = m;
-}
-        else if (letters == 0x31) {
-printLetter.array = n;
-        }
-        else if (letters == 0x44) {
-printLetter.array = o;
-        }
-        else if (letters == 0x4d) {
-printLetter.array = p;
-        }
-        else if (letters == 0x15) {
-printLetter.array = q;
-        }
-        else if (letters == 0x2D) {
-printLetter.array = r;
-        }
-        else if (letters == 0x1B) {
-printLetter.array = s;
-        }
-        else if (letters == 0x2C) {
-printLetter.array = t;
-        }
-        else if (letters == 0x3C) {
-printLetter.array = u;
-        }
-        else if (letters == 0x2A) {
-printLetter.array = v;
-        }
-        else if (letters == 0x1D) {
-printLetter.array = w;
-        }
-        else if (letters == 0x22) {
- printLetter.array = x;
-        }
-        else if (letters == 0x35) {
-printLetter.array = y;
-        }
-        else if (letters == 0x1A) {
-printLetter.array = z;
+            break;
+          case 0x32:
+            printLetter.array = b;
+            break;
+          case 0x21:
+            printLetter.array = c;
+            break;
+          case 0x23:
+            printLetter.array = d;
+            break;
+          case 0x24:
+            printLetter.array = e;
+            break;
+          case 0x2B:
+            printLetter.array = f;
+            break;
+          case 0x34:
+            printLetter.array = g;
+            break;
+          case 0x33:
+            printLetter.array = h;
+            break;
+          case 0x43:
+            printLetter.array = i;
+            break;
+          case 0x3B:
+            printLetter.array = j;
+            break;
+          case 0x42:
+            printLetter.array = k;
+            break;
+          case 0x4B:
+            printLetter.array = l;
+            break;
+          case 0x3A:
+            printLetter.array = m;
+            break;
+          case 0x31:
+            printLetter.array = n;
+            break;
+          case 0x44:
+            printLetter.array = o;
+            break;
+          case 0x4D:
+            printLetter.array = p;
+            break;
+          case 0x15:
+            printLetter.array = q;
+            break;
+          case 0x2D:
+            printLetter.array = r;
+            break;
+          case 0x1B:
+            printLetter.array = s;
+            break;
+          case 0x2C:
+            printLetter.array = t;
+            break;
+          case 0x3C:
+            printLetter.array = u;
+            break;
+          case 0x2A:
+            printLetter.array = v;
+            break;
+          case 0x1D:
+            printLetter.array = w;
+            break;
+          case 0x22:
+            printLetter.array = x;
+            break;
+          case 0x35:
+            printLetter.array = y;
+            break;
+          case 0x1A:
+            printLetter.array = z;
+            break;
+          default:
+            break;
         }
         drawBackground(printLetter, pixel_buffer_start, pixel_address);
     }

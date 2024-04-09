@@ -1,4 +1,4 @@
-#include "timer.h"
+#include "interrupt.h"
 
 void the_reset (void)
 /*******************************************************************************
@@ -100,8 +100,10 @@ asm ( "eret" );
 void interrupt_handler(void){
 int ipending;
 NIOS2_READ_IPENDING(ipending);
+    if (ipending & 0x2)
+        keyboard_isr();
 	if ( ipending & 0x1 ) // interval timer is interrupt level 0
-	interval_timer_isr( );
+	    interval_timer_isr( );
 	// else, ignore the interrupt
 	return;
 }
@@ -130,24 +132,160 @@ void interval_timer_isr(void) {
     }
     return;
 }
+/********************************************************************************/
+void keyboard_isr() {
+    int letter = keyboard();
+    char output;
+    switch (letter) {    //letter mapping
+        //LETTERS
+        case 0x1C:
+            output = 'A';
+            break;
+        case 0x32:
+            output = 'B';
+            break;
+        case 0x21:
+            output = 'C';
+            break;
+        case 0x23:
+            output = 'D';
+            break;
+        case 0x24:
+            output = 'E';
+            break;
+        case 0x2B:
+            output = 'F';
+            break;
+        case 0x34:
+            output = 'G';
+            break;
+        case 0x33:
+            output = 'H';
+            break;
+        case 0x43:
+            output = 'I';
+            break;
+        case 0x3B:
+            output = 'J';
+            break;
+        case 0x42:
+            output = 'K';
+            break;
+        case 0x4B:
+            output = 'L';
+            break;
+        case 0x3A:
+            output = 'M';
+            break;
+        case 0x31:
+            output = 'N';
+            break;
+        case 0x44:
+            output = 'O';
+            break;
+        case 0x4D:
+            output = 'P';
+            break;
+        case 0x15:
+            output = 'Q';
+            break;
+        case 0x2D:
+            output = 'R';
+            break;
+        case 0x1B:
+            output = 'S';
+            break;
+        case 0x2C:
+            output = 'T';
+            break;
+        case 0x3C:
+            output = 'U';
+            break;
+        case 0x2A:
+            output = 'V';
+            break;
+        case 0x1D:
+            output = 'W';
+            break;
+        case 0x22:
+            output = 'X';
+            break;
+        case 0x35:
+            output = 'Y';
+            break;
+        case 0x1A:
+            output = 'Z';
+            break;
 
+        //NUMBERS
+        case 0x45:
+            output = '0';
+            break;
+        case 0x16:
+            output = '1';
+            break;
+        case 0x1E:
+            output = '2';
+            break;
+
+        //ALTERNATIVE CHARACTERS
+        case 0x29:
+            output = ' ';
+            break;
+        case 0x5A:
+            output = '\n';
+            break;
+        case 0x66:
+            output = '\b';
+            break;
+
+        default:
+            output = '0'; // default case if no match found
+    }       
+    switch (game.state){
+        case START:
+            if (output == '\n')
+                game.state = MODESELECT;
+            break;
+        case MODESELECT:
+            if (output == '1')
+                game.state = COMPUTER;
+            else if (output == '2')
+                game.state = MULTIPLAYER;
+            NIOS2_WRITE_STATUS(0);  //disable Nios II interrupts
+            break;
+        case PENDING:
+            int i = wordCompare(output);
+            if (i) {
+                background(0, letter);
+                if (game.word.i == NUMLETTERS)
+                    game.state = START;
+            } else 
+                background(11, 0);
+            break;
+            
+    }
+    return;
+}
 /********************************************************************************/
 
 void timer() {
     count = 30;
 /* Declare volatile pointers to I/O registers (volatile means that IO load and store instructions
 * will be used to access these pointer locations instead of regular memory loads and stores) */
-volatile int * interval_timer_ptr = (int *) 0xFF202000; // interval timer base address
+volatile int * interval_timer_ptr = (int *) TIMER_BASE; // interval timer base address
 /* set the interval timer period for scrolling the HEX displays */
 int counter = 100000000; //1sec
 *(interval_timer_ptr + 0x2) = (counter & 0xFFFF);
 *(interval_timer_ptr + 0x3) = (counter >> 16) & 0xFFFF;
 /* start interval timer, enable its interrupts */
 *(interval_timer_ptr + 1) = 0x7; // STOP = 0, START = 1, CONT = 1, ITO = 1
-/* set mask bits to 1 */
 
-NIOS2_WRITE_IENABLE( 0x3 ); /* set interrupt mask bits for levels 0 (interval timer)
-			* and level 1 (pushbuttons) */
-NIOS2_WRITE_STATUS( 1 ); // enable Nios II interrupts
 return;
+}
+
+void keyboardsetup() {
+    volatile int * keyboard_ptr = (int * ) PS2_BASE;
+    *(keyboard_ptr + 0x4) = 0x1; // enable interrupts
+    NIOS2_WRITE_STATUS(1);  //enable Nios II interrupts
 }

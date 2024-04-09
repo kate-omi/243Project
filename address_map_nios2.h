@@ -60,10 +60,11 @@
 //game states
 #define START 0
 #define MODESELECT 1 
-#define PENDING 2
-#define INCORRECT 3
-#define CORRECT 4
-#define TIMEOUT 5
+#define COMPUTER 2
+#define MULTIPLAYER 3
+#define PENDING 4
+//#define CORRECT 4
+//#define TIMEOUT 5
 
 #define CAT 30
 #define DRAWING 100
@@ -72,6 +73,7 @@ struct Word {
     int status;
     char word[NUMLETTERS + 1];
     int screen;
+    int i;
 };
 
 struct Game {
