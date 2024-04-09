@@ -20,9 +20,8 @@ char keyboard() {
             byte2 = PS2_data & 0xFF;
         }
 
-        if (byte1 == 0xF0) {    //if key released
+        if (byte1 == 0xF0)    //if key released
             return byte2;
-
     }
 return 0;
 }

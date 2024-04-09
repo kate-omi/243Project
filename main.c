@@ -94,7 +94,7 @@ void incorrect() {
     background(10, 0);
     //timer(1000000000) //2 seconds
     game.state = PENDING;
-    background(game.word.screen);
+    background(game.word.screen, 0);
     return;
 }
 
@@ -142,7 +142,7 @@ void wordCompare() {
     int keyboardOutput;
     char output;
 
-    background(game.word.screen,);
+    background(game.word.screen, 0);
     keyboardOutput = keyboard();
     while (i != NUMLETTERS) {
         switch (keyboardOutput) {    //letter mapping
