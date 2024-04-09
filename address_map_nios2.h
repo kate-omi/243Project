@@ -55,4 +55,14 @@
 #define HPS_TIMER3_BASE			0xFFD01000
 #define FPGA_BRIDGE			0xFFD0501C
 
+//game states
+#define START 0
+#define MODESELECT 1
+#define PENDING 2
+#define INCORRECT 3
+#define CORRECT 4
+
+#define CAT 30
+#define DRAWING 100
+
 #endif

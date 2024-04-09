@@ -12,13 +12,6 @@
 #define MULTIPLAYER 2
 #define NONE 3
 
-//game states
-#define START 0
-#define MODESELECT 1
-#define PENDING 2
-#define INCORRECT 3
-#define CORRECT 4
-
 struct Word {
     int status;
     char word[NUMLETTERS + 1];
@@ -63,7 +56,7 @@ int main() {
                 correct();
                 break;
             default:
-                clearScreen();
+                //clearScreen();
                 break;
         }
     };
@@ -113,6 +106,7 @@ void correct() {
 }
 
 void playComputer() {
+    drawScreen(PENDING);
 
     struct Word cat = {0, "CAT", 30};
     struct Word dog = {1, "DOG", 40};
