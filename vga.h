@@ -17,7 +17,7 @@ struct Screen {
 #define END 1
 
 // Function prototypes
-void drawScreen(int screen);
+void background(int screen, int letters);
 void plotPixel(int x, int y, short int line_color);
 
 void removeBackground(struct Screen screen, volatile int pixel_buffer_start, volatile short int* pixel_address);
