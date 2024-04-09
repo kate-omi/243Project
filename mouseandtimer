@@ -271,10 +271,10 @@ int counter = 100000000; //1sec
 
          //does not always show the mouse, no erase function
 
-			if (dx < 0) dx = 0;
-            if (dx > 319 - MOUSEWIDTH) dx = 319 - MOUSEWIDTH;
-            if (dy < 0) dy = 0;
-            if (dy > 239 - MOUSEHEIGHT) dy = 239 - MOUSEHEIGHT;
+			if (dx < 98) dx = 98;
+            if (dx > 230 - MOUSEWIDTH) dx = 230 - MOUSEWIDTH;
+            if (dy < 64) dy = 64;
+            if (dy > 176 - MOUSEHEIGHT) dy = 176 - MOUSEHEIGHT;
 		
 			if((swp->DR & 0b01) == 1){
 				for (int x = 0; x < MOUSEWIDTH; x++) {
@@ -385,8 +385,8 @@ void clear_screen(){
 	int y;
 	
     //go over each pixel in the vga display and set the colour of the pixel to black
-    for (x = 0; x < 320; x++) {
-		for (y = 0; y < 240; y++) {
+    for (x = 98; x < 230; x++) {
+		for (y = 64; y < 176; y++) {
 			plot_pixel(x, y, 0x0000);	
 		}
 	}
