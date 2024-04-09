@@ -113,6 +113,8 @@ NIOS2_READ_IPENDING(ipending);
 void interval_timer_isr(void) {
     unsigned char seg7[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67};
     volatile int *HEX3_HEX0_ptr = (int *)HEX3_HEX0_BASE;
+    *HEX3_HEX0_ptr = (seg7[0] | seg7[3] << 8);
+
 
     volatile int *interval_timer_ptr = (int *)0xFF202000; // interval timer base address
     *interval_timer_ptr = 0;                                // clear the interrupt
@@ -133,7 +135,6 @@ void interval_timer_isr(void) {
 
 void timer() {
     count = 30;
-    *HEX3_HEX0_ptr = (seg7[0] | seg7[3] << 8);
 /* Declare volatile pointers to I/O registers (volatile means that IO load and store instructions
 * will be used to access these pointer locations instead of regular memory loads and stores) */
 volatile int * interval_timer_ptr = (int *) 0xFF202000; // interval timer base address

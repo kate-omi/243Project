@@ -55,6 +55,8 @@
 #define HPS_TIMER3_BASE			0xFFD01000
 #define FPGA_BRIDGE			0xFFD0501C
 
+#define NUMLETTERS 3
+
 //game states
 #define START 0
 #define MODESELECT 1 
@@ -65,6 +67,12 @@
 
 #define CAT 30
 #define DRAWING 100
+
+struct Word {
+    int status;
+    char word[NUMLETTERS + 1];
+    int screen;
+};
 
 struct Game {
     int mode;

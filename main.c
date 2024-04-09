@@ -13,20 +13,6 @@
 #define MULTIPLAYER 2
 #define NONE 3
 
-struct Word {
-    int status;
-    char word[NUMLETTERS + 1];
-    int screen;
-};
-
-struct Game {
-    int mode;
-    int state;
-    struct Word word;
-};
-
-struct Game game;
-
 void start();
 void modeSelect();
 void incorrect();
@@ -88,7 +74,7 @@ void modeSelect() {
         playComputer();
     } else {
         game.mode = MULTIPLAYER;
-        playMultiplayer();
+        //playMultiplayer();
     }
 
     return;
@@ -107,10 +93,6 @@ void correct() {
     //timer(1000000000) //2 seconds
     game.state = START;
     return;
-}
-
-void playMultiplayer(){
-    background()
 }
 
 void playComputer() {
@@ -139,108 +121,6 @@ void playComputer() {
 
     //structured so more words can be added easily
     return;
-}
-
-#include <stdio.h>
-#include <string.h>
-
-void playMultiplayer() {
-  //case 100 of display screen
-    for (int i = 0; i < 3; i++) {
-        outputHex = keyboard();
-        game.word.word[i] = keyboard();
-        switch (keyboard()) {    //letter mapping
-                //LETTERS
-                case 0x1C:
-                    output = 'A';
-                    break;
-                case 0x32:
-                    output = 'B';
-                    break;
-                case 0x21:
-                    output = 'C';
-                    break;
-                case 0x23:
-                    output = 'D';
-                    break;
-                case 0x24:
-                    output = 'E';
-                    break;
-                case 0x2B:
-                    output = 'F';
-                    break;
-                case 0x34:
-                    output = 'G';
-                    break;
-                case 0x33:
-                    output = 'H';
-                    break;
-                case 0x43:
-                    output = 'I';
-                    break;
-                case 0x3B:
-                    output = 'J';
-                    break;
-                case 0x42:
-                    output = 'K';
-                    break;
-                case 0x4B:
-                    output = 'L';
-                    break;
-                case 0x3A:
-                    output = 'M';
-                    break;
-                case 0x31:
-                    output = 'N';
-                    break;
-                case 0x44:
-                    output = 'O';
-                    break;
-                case 0x4D:
-                    output = 'P';
-                    break;
-                case 0x15:
-                    output = 'Q';
-                    break;
-                case 0x2D:
-                    output = 'R';
-                    break;
-                case 0x1B:
-                    output = 'S';
-                    break;
-                case 0x2C:
-                    output = 'T';
-                    break;
-                case 0x3C:
-                    output = 'U';
-                    break;
-                case 0x2A:
-                    output = 'V';
-                    break;
-                case 0x1D:
-                    output = 'W';
-                    break;
-                case 0x22:
-                    output = 'X';
-                    break;
-                case 0x35:
-                    output = 'Y';
-                    break;
-                case 0x1A:
-                    output = 'Z';
-                    break;
-                default:
-                    output = '0'; // default case if no match found
-        }
-        background(game.word.letter, outputHex);
-    }
-//case 101 of display screen
-    while(count!=0){//counter is from timer
-    wordCompare ();
-    }
-    //structured so more words can be added easily
-    return;
-
 }
 
 void wordCompare() {
