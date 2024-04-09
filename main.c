@@ -229,6 +229,7 @@ void playMultiplayer() {
     }
 //case 101 of display screen
  background(player2guess, 0);
+//call mouse and timer here
     while(count!=0){//counter is from timer
     wordCompare ();
     }
