@@ -7,6 +7,8 @@ int main(void)
 i=10;
 j=2;
 count = 30;
+volatile int *HEX3_HEX0_ptr = (int *)HEX3_HEX0_BASE;
+unsigned char seg7[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67};
 *HEX3_HEX0_ptr = (seg7[0] | seg7[3] << 8);
 /* Declare volatile pointers to I/O registers (volatile means that IO load and store instructions
 * will be used to access these pointer locations instead of regular memory loads and stores) */
