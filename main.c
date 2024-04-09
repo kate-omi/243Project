@@ -138,6 +138,7 @@ void playComputer() {
 
 void playMultiplayer() {
   //case 100 of display screen
+    background(player1input, 0);
     for (int i = 0; i < 3; i++) {
         outputHex = keyboard();
         game.word.word[i] = keyboard();
@@ -227,6 +228,7 @@ void playMultiplayer() {
         background(game.word.letter, outputHex);
     }
 //case 101 of display screen
+ background(player2guess, 0);
     while(count!=0){//counter is from timer
     wordCompare ();
     }
