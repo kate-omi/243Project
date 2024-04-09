@@ -61,8 +61,17 @@
 #define PENDING 2
 #define INCORRECT 3
 #define CORRECT 4
+#define TIMEOUT 5
 
 #define CAT 30
 #define DRAWING 100
+
+struct Game {
+    int mode;
+    int state;
+    struct Word word;
+};
+
+struct Game game;
 
 #endif

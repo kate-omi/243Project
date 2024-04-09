@@ -3,6 +3,7 @@
 
 #include "vga.h"
 #include "keyboard.h"
+#include "timer.h"
 
 #define NUMWORDS 3
 #define NUMLETTERS 3
@@ -55,6 +56,9 @@ int main() {
             case CORRECT:
                 correct();
                 break;
+            case TIMEOUT:
+                background(-1, 0);
+                break;
             default:
                 //clearScreen();
                 break;
@@ -103,6 +107,10 @@ void correct() {
     //timer(1000000000) //2 seconds
     game.state = START;
     return;
+}
+
+void playMultiplayer(){
+    background()
 }
 
 void playComputer() {
@@ -241,6 +249,9 @@ void wordCompare() {
     char output;
 
     background(game.word.screen, 0);
+    //call timer
+    timer();
+    if (game.mode == TIMEOUT) return;
     while (i != NUMLETTERS) {
         keyboardOutput = keyboard();
         switch (keyboardOutput) {    //letter mapping
